@@ -19,7 +19,7 @@ Projeto prático desenvolvido como parte dos estudos no PyLadies Bioinfo. Dupla:
 - Semana 1: Planejamento e definição dos requisitos do pacote
     - Escolher projeto: Ilária e Lele
     - Tirar dúvidas do escopo biológico do projeto: Ilária e Lele
-    - Criação do GitHub + projeto: Lele
+    - Criação do GitHub + [projeto](https://github.com/users/leticia/projects/8): Lele
     - Terminar as aulas + criar a conta no GitHub: Ilária
 - Semana 2: Implementação das funções básicas para leitura (e escrita?) de arquivos/sequências
     - Dividir tarefas no GitHub Projects
