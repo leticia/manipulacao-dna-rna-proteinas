@@ -7,6 +7,8 @@ Projeto prático desenvolvido como parte dos estudos no PyLadies Bioinfo. Dupla:
 # Estrutura do projeto
 ```
 ├── README.md
+├── LICENSE
+├── .gitignore
 ├── bioinfo_package
 │   └── file_handler.py
 └── tests
