@@ -5,12 +5,13 @@ Projeto prático desenvolvido como parte dos estudos no PyLadies Bioinfo. Dupla:
 > Criar um pacote que permita a manipulação de arquivos e sequências de DNA, RNA e proteínas.
 
 # Estrutura do projeto
-.
+```
 ├── README.md
 ├── bioinfo_package
 │   └── file_handler.py
 └── tests
     └── test_file_handler.py
+```
 
 # Cronograma de desenvolvimento
 - Semana 1: Planejamento e definição dos requisitos do pacote
