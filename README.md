@@ -4,6 +4,12 @@ Projeto prático desenvolvido como parte dos estudos no PyLadies Bioinfo. Dupla:
 
 > Criar um pacote que permita a manipulação de arquivos e sequências de DNA, RNA e proteínas.
 
+# Objetivo do Projeto
+O objetivo deste projeto é criar um _pipeline_ que faça os passos do Dogma Central da
+Biologia Molecular:
+
+> DNA -> transcrição -> RNA -> tradução -> Proteína
+
 # Estrutura do projeto
 ```
 ├── README.md
@@ -11,8 +17,12 @@ Projeto prático desenvolvido como parte dos estudos no PyLadies Bioinfo. Dupla:
 ├── .gitignore
 ├── bioinfo_package
 │   └── file_handler.py
+│   └── translator.py
+│   └── transcriptor.py
 └── tests
     └── test_file_handler.py
+    └── test_translator.py
+    └── test_transcriptor.py
 ```
 
 # Cronograma de desenvolvimento
@@ -23,7 +33,7 @@ Projeto prático desenvolvido como parte dos estudos no PyLadies Bioinfo. Dupla:
     - Terminar as aulas + criar a conta no GitHub: Ilária
 - Semana 2: Implementação das funções básicas para leitura (e escrita?) de arquivos/sequências
     - Dividir tarefas no GitHub Projects
-    - Começar a escrever código!
+    - Começar a escrever código (e primeiros testes)
 - Semana 3: Adição de funcionalidades para manipulação de sequências (transcrição, tradução, etc. ?).
     - 50% do código pronto
     - Início da documentação
