@@ -43,10 +43,11 @@ manipulaçao-dna-rna-proteina/
 │       └── __init__.py
 ├── tests/
 │   └── __init__.py
+├── .gitignore
 ├── requirements.txt
+├── pytest.ini
 ├── setup.py
 ├── LICENSE
-├── .gitignore
 └── README.md
 ```
 
