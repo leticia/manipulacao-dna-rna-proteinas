@@ -47,3 +47,12 @@ class TestFastaParser:
 
         assert result['id'] == "gene1"
         assert result['description'] == ""
+
+    def test_parse_complex_header(self):
+        """Testa parsing de header complexo com múltiplas palavras."""
+        fasta = ">NM_004006.3 Homo sapiens dystrophin (DMD), transcript variant 1"
+        fasta += "\nATGC"
+        result = FastaParser.parse(fasta)
+
+        assert result['id'] == "NM_004006.3"
+        assert "Homo sapiens" in result['description']
