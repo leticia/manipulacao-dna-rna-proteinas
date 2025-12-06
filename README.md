@@ -10,6 +10,24 @@ Biologia Molecular:
 
 > DNA -> transcrição -> RNA -> tradução -> Proteína
 
+# Requerimentos
+- Python 3.10+
+- Bibliotecas: Biopython, Flask/FastAPI (para a interface web), pytest (para
+  testes)
+- Ambiente virtual: venv ou conda (opcional, mas recomendado)
+
+# Instalação
+1. Clone o repositório;
+2. Crie um ambiente virtual (se usar venv ou conda) e ative-o:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # No Windows use `venv\Scripts\activate`
+   ```
+3. Instale as dependências:
+    ```bash
+    pip install -r requirements.txt
+    ```
+
 # Estrutura do projeto
 ```
 manipulaçao-dna-rna-proteina/
