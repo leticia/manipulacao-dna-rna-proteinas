@@ -5,7 +5,7 @@ Implementa o padrão Single Responsibility Principle (SRP).
 
 # from typing import Dict, List
 
-class FastaParserError(Exception):
+class FastaParseError(Exception):
     """Exceção personalizada para erros de parsing FASTA."""
 
 class FastaParser:
@@ -38,17 +38,17 @@ class FastaParser:
         """
 
         if not fasta_text or not isinstance(fasta_text, str):
-            raise ValueError("Entrada FASTA vazia ou conteúdo inválido.")
+            raise FastaParseError("Entrada FASTA vazia ou conteúdo inválido.")
 
         lines = fasta_text.strip().split('\n')
 
         # Validação do formato FASTA
         if not lines or not lines[0].startswith('>'):
-            raise FastaParserError("Formato FASTA inválido: cabeçalho malformatado ou ausente.")
+            raise FastaParseError("Formato FASTA inválido: cabeçalho malformatado ou ausente.")
 
         header = lines[0][1:].strip() # Remove '>'
         if not header:
-            raise FastaParserError("Header FASTA está vazio após '>'")
+            raise FastaParseError("Header FASTA está vazio após '>'")
 
         # Separa ID e descrição do cabeçalho
         header_parts = header.split(maxsplit=1)
@@ -59,11 +59,8 @@ class FastaParser:
         # em branco e convertendo para maiúsculas
         sequence_lines = lines[1:]
         if not sequence_lines:
-            raise FastaParserError("Formato FASTA inválido: sequência ausente.")
-        sequence = ''.join(sequence_lines).upper().replace(' ', '').replace('\t', '')
-
-        if not sequence:
-            raise FastaParserError("Formato FASTA inválido: sequência vazia.")
+            raise FastaParseError("Formato FASTA inválido: sequência ausente.")
+        sequence = ''.join(sequence_lines).upper().replace(' ', '').replace('\t', '').replace('\n', '')
 
         return {
             'header': header,

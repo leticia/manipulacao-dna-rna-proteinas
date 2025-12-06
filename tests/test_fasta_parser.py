@@ -1,11 +1,7 @@
 import pytest
-from src.core.fasta_parser import FastaParser
+from src.core.fasta_parser import FastaParser, FastaParseError
 
 class TestFastaParser:
-    """
-    Testes unitários para a classe FastaParser.
-    """
-
     def test_parse_valid_fasta(self):
         """Testa parsing de FASTA válido."""
         fasta = ">gene1 description\nATGCGATCG\nATCGATCG"
@@ -56,3 +52,39 @@ class TestFastaParser:
 
         assert result['id'] == "NM_004006.3"
         assert "Homo sapiens" in result['description']
+
+class TestFastaParseErrors:
+    def test_parse_empty_string_raises_error(self):
+        """Testa que string vazia lança exceção."""
+        with pytest.raises(FastaParseError, match="Entrada FASTA vazia ou conteúdo inválido."):
+            FastaParser.parse("")
+
+    def test_parse_none_raises_error(self):
+        """Testa que None lança exceção."""
+        with pytest.raises(FastaParseError, match="Entrada FASTA vazia ou conteúdo inválido."):
+            FastaParser.parse(None)
+
+    def test_parse_non_string_raises_error(self):
+        """Testa que tipo não-string lança exceção."""
+        with pytest.raises(FastaParseError, match="Entrada FASTA vazia ou conteúdo inválido."):
+            FastaParser.parse(12345)
+
+    def test_parse_no_header_raises_error(self):
+        """Testa que FASTA sem '>' lança exceção."""
+        with pytest.raises(FastaParseError, match="Formato FASTA inválido: cabeçalho malformatado ou ausente."):
+            FastaParser.parse("ATGCGATCG")
+
+    def test_parse_empty_header_raises_error(self):
+        """Testa que header vazio lança exceção."""
+        with pytest.raises(FastaParseError, match="Header FASTA está vazio após '>'"):
+            FastaParser.parse(">\nATGC")
+
+    def test_parse_no_sequence_raises_error(self):
+        """Testa que FASTA sem sequência lança exceção."""
+        with pytest.raises(FastaParseError, match="Formato FASTA inválido: sequência ausente."):
+            FastaParser.parse(">gene1")
+
+    def test_parse_only_whitespace_sequence_raises_error(self):
+        """Testa que sequência apenas com espaços lança exceção."""
+        with pytest.raises(FastaParseError, match="Formato FASTA inválido: sequência ausente."):
+            FastaParser.parse(">gene1\n   \n  ")
