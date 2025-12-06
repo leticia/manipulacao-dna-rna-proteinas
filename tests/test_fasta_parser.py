@@ -16,6 +16,22 @@ class TestFastaParser:
         assert result['id'] == "gene1"
         assert result['description'] == "description"
 
+    def test_parse_multiline_sequence(self):
+        """Testa parsing com sequência em múltiplas linhas."""
+        fasta = ">gene1\nATGC\nGATC\nTAGC"
+        result = FastaParser.parse(fasta)
+
+        assert result['sequence'] == "ATGCGATCTAGC"
+        assert len(result['sequence']) == 12
+
+    def test_parse_lowercase_converted_to_uppercase(self):
+        """Testa que sequência minúscula é convertida para maiúscula."""
+        fasta = ">gene1\natgcgatcg"
+        result = FastaParser.parse(fasta)
+
+        assert result['sequence'] == "ATGCGATCG"
+        assert result['sequence'].isupper()
+
     def test_parse_with_spaces_in_sequence(self):
         """Testa que espaços na sequência são removidos."""
         fasta = ">gene1\nATGC GATC TAGC"
