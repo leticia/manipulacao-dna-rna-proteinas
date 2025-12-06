@@ -12,17 +12,24 @@ Biologia Molecular:
 
 # Estrutura do projeto
 ```
-├── README.md
+manipulaçao-dna-rna-proteina/
+├── src/
+│   ├── __init__.py
+│   ├── core/
+│   │   └── __init__.py
+│   ├── services/
+│   │   └── __init__.py
+│   ├── utils/
+│   │   └── __init__.py
+│   └── web/
+│       └── __init__.py
+├── tests/
+│   └── __init__.py
+├── requirements.txt
+├── setup.py
 ├── LICENSE
 ├── .gitignore
-├── bioinfo_package
-│   └── file_handler.py
-│   └── translator.py
-│   └── transcriptor.py
-└── tests
-    └── test_file_handler.py
-    └── test_translator.py
-    └── test_transcriptor.py
+└── README.md
 ```
 
 # Cronograma de desenvolvimento
