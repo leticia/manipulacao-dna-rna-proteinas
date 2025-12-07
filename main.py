@@ -9,7 +9,7 @@ from src.fasta_reader import FastaReader
 from src.sequence_analyzer import SequenceAnalyzer
 from src.transcription import Transcription
 from src.translation import Translation
-#from src.html_generator import HTMLGenerator
+from src.html_generator import HTMLGenerator
 
 def main():
     """
