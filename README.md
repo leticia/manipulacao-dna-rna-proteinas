@@ -12,8 +12,7 @@ Biologia Molecular:
 
 # Requerimentos
 - Python 3.10+
-- Bibliotecas: Biopython, Flask/FastAPI (para a interface web), pytest (para
-  testes)
+- Bibliotecas: pytest, pycov (para testes)
 - Ambiente virtual: venv ou conda (opcional, mas recomendado)
 
 # Instalação
@@ -31,26 +30,24 @@ Biologia Molecular:
 # Estrutura do projeto
 ```
 manipulaçao-dna-rna-proteina/
+├── .gitignore
+├── main.py
+├── requirements.txt
+├── LICENSE
+├── README.md
 ├── src/
 │   ├── __init__.py
-│   ├── core/
-│   │   ├── __init__.py
-│   │   └── fasta_parser.py
-│   ├── services/
-│   │   └── __init__.py
-│   ├── utils/
-│   │   └── __init__.py
-│   └── web/
-│       └── __init__.py
-├── tests/
-│   ├── __init__.py
-│   └── test_fasta_parser.py
-├── .gitignore
-├── requirements.txt
-├── pytest.ini
-├── setup.py
-├── LICENSE
-└── README.md
+│   ├── fasta_reader.py
+│   ├── sequence_analyzer.py
+│   ├── transcription.py
+│   ├── translation.py
+│   └── html_generator.py
+└── tests/
+    ├── __init__.py
+    ├── test_fasta_reader.py
+    ├── test_sequence_analyzer.py
+    ├── test_transcription.py
+    └── test_translation.py
 ```
 
 # Cronograma de desenvolvimento
