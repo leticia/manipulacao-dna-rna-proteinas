@@ -88,3 +88,19 @@ class TestFastaParseErrors:
         """Testa que sequência apenas com espaços lança exceção."""
         with pytest.raises(FastaParseError, match="Formato FASTA inválido: sequência ausente."):
             FastaParser.parse(">gene1\n   \n  ")
+
+class TestSequenceValidation:
+    def test_validate_dna_valid(self):
+        """Testa validação de sequência DNA válida."""
+        assert FastaParser.validate_sequence("ATGCGATCG", "dna")
+        assert FastaParser.validate_sequence("NNNNATGC", "dna")
+
+    def test_validate_dna_invalid(self):
+        """Testa validação de DNA inválido."""
+        assert not FastaParser.validate_sequence("ATGCUXYZ", "dna")
+        assert not FastaParser.validate_sequence("ATGCMKWS", "dna")
+
+    def test_validate_invalid_type_raises_error(self):
+        """Testa que tipo inválido lança exceção."""
+        with pytest.raises(ValueError, match="Tipo de sequência inválido"):
+            FastaParser.validate_sequence("ATGC", "invalid_type")

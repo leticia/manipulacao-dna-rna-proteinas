@@ -14,7 +14,17 @@ class FastaParser:
 
     Responsabilidade única: converter texto FASTA em estrutura de dados
     utilizável pelo sistema, validando o formato e conteúdo.
+
+    Attributes:
+        VALID_DNA_BASES: Conjunto de bases válidas para DNA
+        VALID_RNA_BASES: Conjunto de bases válidas para RNA
+        VALID_PROTEIN_AA: Conjunto de aminoácidos válidos
     """
+
+    # Constantes para validação
+    VALID_DNA_BASES = set('ACGTN')
+    VALID_RNA_BASES = set('')
+    VALID_PROTEIN_AA = set('')
 
     @staticmethod
     def parse(fasta_text: str) -> dict:
@@ -34,7 +44,7 @@ class FastaParser:
             }
 
         Raises:
-            ValueError: Se o formato do FASTA for inválido.
+            FastaParseError: Se o formato do FASTA for inválido.
         """
 
         if not fasta_text or not isinstance(fasta_text, str):
@@ -68,3 +78,36 @@ class FastaParser:
             'id': sequence_id,
             'description': description
         }
+
+    @staticmethod
+    def validate_sequence(sequence: str, sequence_type: str = 'dna') -> bool:
+        """
+        Valida se a sequência contém apenas caracteres válidos para o tipo especificado.
+
+        Args:
+            sequence: Sequência a ser validada
+            sequence_type: Tipo de sequência ('dna', 'rna', ou 'protein')
+
+        Returns:
+            bool: True se válido, False caso contrário
+
+        Raises:
+            ValueError: Se sequence_type for inválido
+        """
+
+        sequence_type = sequence_type.lower()
+
+        if sequence_type == 'dna':
+            valid_chars = FastaParser.VALID_DNA_BASES
+        elif sequence_type == 'rna':
+            valid_chars = FastaParser.VALID_RNA_BASES
+        elif sequence_type == 'protein':
+            valid_chars = FastaParser.VALID_PROTEIN_AA
+        else:
+            raise ValueError(
+                f"Tipo de sequência inválido: {sequence_type}. "
+                "Use 'dna', 'rna', ou 'protein'"
+            )
+
+        sequence_upper = sequence.upper()
+        return all(char in valid_chars for char in sequence_upper)
