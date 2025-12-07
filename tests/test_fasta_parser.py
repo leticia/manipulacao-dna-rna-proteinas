@@ -104,3 +104,8 @@ class TestSequenceValidation:
         """Testa que tipo inválido lança exceção."""
         with pytest.raises(ValueError, match="Tipo de sequência inválido"):
             FastaParser.validate_sequence("ATGC", "invalid_type")
+
+    def test_validate_rna_valid(self):
+        """Testa validação de RNA válido."""
+        assert FastaParser.validate_sequence("AUGCGAUCG", "rna")
+        assert not FastaParser.validate_sequence("ATGC", "rna")

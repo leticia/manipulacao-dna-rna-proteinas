@@ -23,7 +23,7 @@ class FastaParser:
 
     # Constantes para validação
     VALID_DNA_BASES = set('ACGTN')
-    VALID_RNA_BASES = set('')
+    VALID_RNA_BASES = set('ACGUN')
     VALID_PROTEIN_AA = set('')
 
     @staticmethod
