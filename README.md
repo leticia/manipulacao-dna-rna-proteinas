@@ -79,6 +79,3 @@ manipulaçao-dna-rna-proteina/
     - Finalização da documentação
     - Testes automatizados
     - Testes manuais: casos não cobertos pelos testes automatizados
-
-# Apresentação do projeto
-- Data: 07/12/2025
