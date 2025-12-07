@@ -109,3 +109,12 @@ class TestSequenceValidation:
         """Testa validação de RNA válido."""
         assert FastaParser.validate_sequence("AUGCGAUCG", "rna")
         assert not FastaParser.validate_sequence("ATGC", "rna")
+
+    def test_validate_protein_valid(self):
+        """Testa validação de proteína válida."""
+        assert FastaParser.validate_sequence("MFKGDWIV", "protein")
+        assert FastaParser.validate_sequence("ACDEFGHIKLMNPQRSTVWY", "protein")
+
+    def test_validate_protein_with_stop(self):
+        """Testa validação de proteína com códon de parada."""
+        assert FastaParser.validate_sequence("MFKG*", "protein")

@@ -24,7 +24,7 @@ class FastaParser:
     # Constantes para validação
     VALID_DNA_BASES = set('ACGTN')
     VALID_RNA_BASES = set('ACGUN')
-    VALID_PROTEIN_AA = set('')
+    VALID_PROTEIN_AA = set('ACDEFGHIKLMNPQRSTVWY*X') # * = stop, X = desconhecido
 
     @staticmethod
     def parse(fasta_text: str) -> dict:
