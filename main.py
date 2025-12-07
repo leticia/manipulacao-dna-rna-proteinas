@@ -6,9 +6,9 @@ Coordena a leitura, análise e geração de relatório HTML.
 import sys
 from pathlib import Path
 from src.fasta_reader import FastaReader
-#from src.sequence_analyzer import SequenceAnalyzer
-#from src.transcription import Transcription
-#from src.translation import Translation
+from src.sequence_analyzer import SequenceAnalyzer
+from src.transcription import Transcription
+from src.translation import Translation
 #from src.html_generator import HTMLGenerator
 
 def main():
