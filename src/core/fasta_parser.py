@@ -3,7 +3,7 @@ Módulo responsável por ler e processar arquivos FASTA.
 Implementa o padrão Single Responsibility Principle (SRP).
 """
 
-# from typing import Dict, List
+from typing import Dict, List
 
 class FastaParseError(Exception):
     """Exceção personalizada para erros de parsing FASTA."""
@@ -151,3 +151,52 @@ class FastaParser:
                 return 'protein'
 
         return 'unknown'
+
+    @staticmethod
+    def parse_multi_fasta(fasta_text: str) -> List[Dict[str, str]]:
+        """
+        Parse arquivo FASTA com múltiplas sequências.
+
+        Args:
+            fasta_text: Texto contendo múltiplas sequências FASTA
+
+        Returns:
+            list: Lista de dicionários, cada um representando uma sequência
+
+        Raises:
+            FastaParseError: Se formato for inválido
+        """
+        if not fasta_text or not fasta_text.strip():
+            raise FastaParseError("Texto FASTA está vazio")
+
+        sequences = []
+        current_header = None
+        current_sequence = []
+
+        for line in fasta_text.strip().split('\n'):
+            line = line.strip()
+
+            if not line:
+                continue
+
+            if line.startswith('>'):
+                # Salvar sequência anterior se existir
+                if current_header is not None:
+                    fasta_block = f"{current_header}\n{''.join(current_sequence)}"
+                    sequences.append(FastaParser.parse(fasta_block))
+
+                # Iniciar nova sequência
+                current_header = line
+                current_sequence = []
+            else:
+                current_sequence.append(line)
+
+        # Salvar última sequência
+        if current_header is not None:
+            fasta_block = f"{current_header}\n{''.join(current_sequence)}"
+            sequences.append(FastaParser.parse(fasta_block))
+
+        if not sequences:
+            raise FastaParseError("Nenhuma sequência válida encontrada")
+
+        return sequences

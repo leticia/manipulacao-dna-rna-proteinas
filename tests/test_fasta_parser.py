@@ -140,3 +140,40 @@ class TestSequenceTypeDetection:
         """Testa detecção de tipo desconhecido."""
         result = FastaParser.detect_sequence_type("XYZ123")
         assert result == "unknown"
+
+class TestMultiFasta:
+    """Testes de parsing de múltiplas sequências."""
+
+    def test_parse_two_sequences(self):
+        """Testa parsing de duas sequências."""
+        fasta = ">seq1\nATGC\n>seq2\nGATT"
+        result = FastaParser.parse_multi_fasta(fasta)
+
+        assert len(result) == 2
+        assert result[0]['id'] == "seq1"
+        assert result[1]['id'] == "seq2"
+
+    def test_parse_three_sequences(self):
+        """Testa parsing de três sequências."""
+        fasta = ">seq1\nATGC\n>seq2\nGATT\n>seq3\nCCCC"
+        result = FastaParser.parse_multi_fasta(fasta)
+
+        assert len(result) == 3
+        assert result[2]['sequence'] == "CCCC"
+
+    def test_parse_multi_with_blank_lines(self):
+        """Testa parsing com linhas em branco."""
+        fasta = ">seq1\nATGC\n\n>seq2\nGATT\n\n"
+        result = FastaParser.parse_multi_fasta(fasta)
+
+        assert len(result) == 2
+
+    def test_parse_multi_empty_raises_error(self):
+        """Testa que entrada vazia lança erro."""
+        with pytest.raises(FastaParseError, match="vazio"):
+            FastaParser.parse_multi_fasta("")
+
+    def test_parse_multi_no_sequences_raises_error(self):
+        """Testa que ausência de sequências lança erro."""
+        with pytest.raises(FastaParseError, match="Nenhuma sequência válida"):
+            FastaParser.parse_multi_fasta("not a fasta")
