@@ -27,6 +27,18 @@ Biologia Molecular:
     pip install -r requirements.txt
     ```
 
+## Uso
+
+```bash
+python main.py caminho/para/arquivo.fasta
+```
+
+## Testes
+
+```bash
+pytest
+```
+
 # Estrutura do projeto
 ```
 manipulaçao-dna-rna-proteina/
@@ -35,6 +47,7 @@ manipulaçao-dna-rna-proteina/
 ├── requirements.txt
 ├── LICENSE
 ├── README.md
+├── pytest.ini
 ├── src/
 │   ├── __init__.py
 │   ├── fasta_reader.py
