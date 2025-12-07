@@ -111,3 +111,43 @@ class FastaParser:
 
         sequence_upper = sequence.upper()
         return all(char in valid_chars for char in sequence_upper)
+
+    @staticmethod
+    def detect_sequence_type(sequence: str) -> str:
+        """
+        Detecta o tipo de sequência (DNA, RNA, ou Proteína) com base nos caracteres presentes.
+
+        Regras:
+        - Se contém 'U' mas não 'T' → RNA
+        - Se contém 'T' mas não 'U' → DNA
+        - Se contém aminoácidos além de ACGTU → Proteína
+
+        Args:
+            sequence: Sequência a ser analisada
+
+        Returns:
+            str: 'dna', 'rna', 'protein', ou 'unknown'
+        """
+
+        sequence_upper = sequence.upper()
+        unique_chars = set(sequence_upper)
+
+        has_t = 'T' in sequence_upper
+        has_u = 'U' in sequence_upper
+
+        if has_t and not has_u:
+            if FastaParser.validate_sequence(sequence, 'dna'):
+                return 'dna'
+        if has_u and not has_t:
+            if FastaParser.validate_sequence(sequence, 'rna'):
+                return 'rna'
+
+        # Se não é DNA nem RNA, assume proteína
+        nucleotide_chars = FastaParser.VALID_DNA_BASES | FastaParser.VALID_RNA_BASES
+        has_protein_chars = any(char not in nucleotide_chars for char in unique_chars)
+
+        if has_protein_chars:
+            if FastaParser.validate_sequence(sequence, 'protein'):
+                return 'protein'
+
+        return 'unknown'

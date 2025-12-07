@@ -118,3 +118,25 @@ class TestSequenceValidation:
     def test_validate_protein_with_stop(self):
         """Testa validação de proteína com códon de parada."""
         assert FastaParser.validate_sequence("MFKG*", "protein")
+
+class TestSequenceTypeDetection:
+    """Testes de detecção automática de tipo."""
+
+    def test_detect_dna(self):
+        """Testa detecção de DNA."""
+        assert FastaParser.detect_sequence_type("ATGCGATCG") == "dna"
+        assert FastaParser.detect_sequence_type("NNNATGC") == "dna"
+
+    def test_detect_rna(self):
+        """Testa detecção de RNA."""
+        assert FastaParser.detect_sequence_type("AUGCGAUCG") == "rna"
+
+    def test_detect_protein(self):
+        """Testa detecção de proteína."""
+        assert FastaParser.detect_sequence_type("MFKGDWIV") == "protein"
+        assert FastaParser.detect_sequence_type("ACDEFGHIKLMNPQRSTVWY") == "protein"
+
+    def test_detect_unknown(self):
+        """Testa detecção de tipo desconhecido."""
+        result = FastaParser.detect_sequence_type("XYZ123")
+        assert result == "unknown"
