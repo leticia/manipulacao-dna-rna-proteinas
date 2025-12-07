@@ -34,7 +34,8 @@ manipulaçao-dna-rna-proteina/
 ├── src/
 │   ├── __init__.py
 │   ├── core/
-│   │   └── __init__.py
+│   │   ├── __init__.py
+│   │   └── fasta_parser.py
 │   ├── services/
 │   │   └── __init__.py
 │   ├── utils/
@@ -42,7 +43,8 @@ manipulaçao-dna-rna-proteina/
 │   └── web/
 │       └── __init__.py
 ├── tests/
-│   └── __init__.py
+│   ├── __init__.py
+│   └── test_fasta_parser.py
 ├── .gitignore
 ├── requirements.txt
 ├── pytest.ini
