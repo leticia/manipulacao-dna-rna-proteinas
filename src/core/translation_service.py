@@ -7,8 +7,8 @@ Design Pattern: Singleton
 - Economiza recursos (64 códons são constantes)
 - Evita reinicializações desnecessárias
 """
-from typing import List, Dict, Optional, Tuple
-
+from typing import List, Dict
+from src.core.transcription_service import TranscriptionService
 
 class CodonTable:
     """
@@ -208,12 +208,17 @@ class TranslationService:
         Raises:
             ValueError: Se sequência for inválida
         """
+        if rna_sequence is None or not rna_sequence.strip():
+            raise TranslationError("Não há sequência para traduzir")
+        if not isinstance(rna_sequence, str):
+            raise TranslationError(f"Sequência deve ser um texto")
+
         rna_sequence = rna_sequence.upper()
 
         # Validação
         valid_bases = set('AUGCN')
         if not all(base in valid_bases for base in rna_sequence):
-            raise ValueError("Sequência de RNA contém bases inválidas")
+            raise TranslationError("Sequência de RNA contém bases inválidas")
 
         if find_orf:
             return self._translate_with_orf(rna_sequence)
@@ -288,7 +293,7 @@ class TranslationService:
 
         return ''.join(protein)
 
-    def find_all_orfs(self, rna_sequence: str, min_length: int = 30) -> list:
+    def find_all_orfs(self, rna_sequence: str, min_length: int = 30) -> List[Dict[str, any]]:
         """
         Encontra todos os ORFs possíveis na sequência.
 
@@ -297,7 +302,14 @@ class TranslationService:
             min_length: Tamanho mínimo do ORF (aminoácidos)
 
         Returns:
-            list: Lista de dicionários com informações de cada ORF
+            list: Lista de dicionários com informações de cada ORF:
+                {
+                    'frame': int,          # Fase de leitura (0, 1, 2)
+                    'start': int,          # Posição inicial (nucleotídeo)
+                    'end': int,            # Posição final (nucleotídeo)
+                    'length': int,         # Comprimento (aminoácidos)
+                    'protein': str         # Sequência de aminoácidos
+                }
         """
         orfs = []
         rna_sequence = rna_sequence.upper()
@@ -344,8 +356,82 @@ class TranslationService:
 
                         protein.append(amino_acid)
                     else:
+                        # Chegou ao fim sem encontrar stop codon
                         i += 3
                 else:
                     i += 3
 
+        # Ordenar por tamanho (maior primeiro)
+        orfs.sort(key=lambda x: x['length'], reverse=True)
+
         return orfs
+
+    def translate_six_frames(self, dna_sequence: str) -> Dict[str, List[str]]:
+        """
+        Traduz sequência de DNA nas 6 fases de leitura possíveis.
+
+        3 frames na fita direta (forward)
+        3 frames na fita reverso-complementar (reverse)
+
+        Args:
+            dna_sequence: Sequência de DNA
+
+        Returns:
+            dict: {
+                'forward': [frame0, frame1, frame2],
+                'reverse': [frame0, frame1, frame2]
+            }
+        """
+
+        # Transcrever DNA → RNA
+        rna_forward = TranscriptionService.transcribe(dna_sequence)
+
+        # Obter reverso-complemento e transcrever
+        dna_reverse = TranscriptionService.get_reverse_complement(
+            dna_sequence, 'dna'
+        )
+        rna_reverse = TranscriptionService.transcribe(dna_reverse)
+
+        # Traduzir 3 frames da fita direta
+        forward_frames = []
+        for frame in range(3):
+            protein = self._translate_direct(rna_forward[frame:])
+            forward_frames.append(protein)
+
+        # Traduzir 3 frames da fita reversa
+        reverse_frames = []
+        for frame in range(3):
+            protein = self._translate_direct(rna_reverse[frame:])
+            reverse_frames.append(protein)
+
+        return {
+            'forward': forward_frames,
+            'reverse': reverse_frames
+        }
+
+    def get_codon_usage(self, rna_sequence: str) -> Dict[str, int]:
+        """
+        Calcula uso de códons na sequência.
+
+        Args:
+            rna_sequence: Sequência de RNA
+
+        Returns:
+            dict: Dicionário com contagem de cada códon
+
+        Examples:
+            >>> service = TranslationService()
+            >>> usage = service.get_codon_usage("AUGAAAUAA")
+            >>> usage['AUG']
+            1
+        """
+        rna_sequence = rna_sequence.upper()
+        codon_counts = {}
+
+        for i in range(0, len(rna_sequence) - 2, 3):
+            codon = rna_sequence[i:i+3]
+
+            if len(codon) == 3:
+                codon_counts[codon] = codon_counts.get(codon, 0) + 1
+
+        return codon_counts
